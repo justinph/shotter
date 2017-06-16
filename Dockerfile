@@ -12,9 +12,9 @@ RUN apt-get update -qqy && \
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
   && apt-get update -qqy \
-  && apt-get -y install google-chrome-stable \
-  && rm /etc/apt/sources.list.d/google-chrome.list \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  && apt-get -y install google-chrome-stable
+  #&& rm /etc/apt/sources.list.d/google-chrome.list \
+  #&& rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Install Java, CHECKS OK
 RUN apt-get -y --no-install-recommends install openjdk-8-jre-headless
@@ -43,7 +43,7 @@ RUN apt-get install -y xfonts-100dpi xfonts-75dpi xfonts-base xfonts-cyrillic xf
 
 # next three install MS core fonts, e.g. arial, georgia, CHECKS OK
 RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
-RUN apt-get install ttf-mscorefonts-installer
+RUN apt-get install -y ttf-mscorefonts-installer
 
 # clean font cache, CHECKS OK
 RUN /usr/bin/fc-cache -f -v
