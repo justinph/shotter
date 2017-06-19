@@ -70,12 +70,17 @@ ADD imagescripts/xvfb_init /etc/init.d/xvfb
 RUN chmod a+x /etc/init.d/xvfb
 ENV DISPLAY :99
 
-
+# start xvfb & selenium
 WORKDIR /root
 COPY start.sh .
 RUN chmod a+x start.sh
 
+COPY app/ /app
+
 CMD ["/bin/bash"]
 
+# ENTRYPOINT ["node"]
+
+# CMD ["/app/shoot.js"]
 
 
