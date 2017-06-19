@@ -65,9 +65,17 @@ RUN apt-get clean \
 # Need to research the correct thing to do here
 # see: https://www.ctl.io/developers/blog/post/dockerfile-entrypoint-vs-cmd/
 
+# startup script for xvfb
+ADD imagescripts/xvfb_init /etc/init.d/xvfb
+RUN chmod a+x /etc/init.d/xvfb
+ENV DISPLAY :99
+
+
+WORKDIR /root
+COPY start.sh .
+RUN chmod a+x start.sh
+
 CMD ["/bin/bash"]
-
-
 
 
 
