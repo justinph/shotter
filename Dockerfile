@@ -62,25 +62,24 @@ RUN apt-get clean \
   && rm /etc/apt/sources.list.d/google-chrome.list \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Need to research the correct thing to do here
-# see: https://www.ctl.io/developers/blog/post/dockerfile-entrypoint-vs-cmd/
+RUN useradd -ms /bin/bash shotter
 
-# startup script for xvfb
-ADD imagescripts/xvfb_init /etc/init.d/xvfb
-RUN chmod a+x /etc/init.d/xvfb
-ENV DISPLAY :99
+WORKDIR /app
+RUN chmod 777 /app
 
-# start xvfb & selenium
-WORKDIR /root
 COPY start.sh .
 RUN chmod a+x start.sh
 
-COPY app/ /app
+USER shotter
 
-CMD ["/bin/bash"]
+COPY package.json .
+RUN npm install
 
-# ENTRYPOINT ["node"]
+COPY shoot.js .
+COPY urls.txt .
 
-# CMD ["/app/shoot.js"]
+# place for the screenshots to go, for now
+RUN mkdir chromeout
 
+CMD /app/start.sh
 
